@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.HabitTracker" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.HabitTracker" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:colorAccent">#22D3EE</item>
+        <item name="android:windowBackground">#020617</item>
+    </style>
 </resources>
