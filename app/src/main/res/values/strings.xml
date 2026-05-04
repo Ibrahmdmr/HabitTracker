@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Günlük Takip</string>
     <string name="home_title">Günlük Takip</string>
-    <string name="onboarding_text">Bugün için küçük bir hedef seç ve serini başlat.</string>
     <string name="home_today_streak_message">Bugün serini devam ettir.</string>
     <string name="settings">Ayarlar</string>
     <string name="settings_icon">⚙</string>
@@ -16,20 +15,21 @@
     <string name="minus_symbol">-</string>
     <string name="chevron_symbol">›</string>
     <string name="pro">PRO</string>
-    <string name="pro_feature">Pro özelliği</string>
     <string name="motivation_title">Her gün küçük adımlar.</string>
     <string name="motivation_subtitle">Seriyi koru, ilerlemeyi hisset.</string>
     <string name="empty_title">İlk alışkanlığını oluşturmaya başla</string>
     <string name="empty_subtitle">Bugün için tek küçük kazanım yeter.</string>
     <string name="add_habit_button">Alışkanlık ekle</string>
-    <string name="today_completed_info">Bugün %1$d alışkanlık tamamlandı</string>
+    <plurals name="today_completed_info">
+        <item quantity="one">Bugün %1$d alışkanlık tamamlandı</item>
+        <item quantity="other">Bugün %1$d alışkanlık tamamlandı</item>
+    </plurals>
     <string name="total_habits">Toplam alışkanlık</string>
     <string name="completed_today">Bugün tamamlanan</string>
     <string name="habit_added_snackbar">Alışkanlık eklendi 🎉</string>
     <string name="habit_deleted_snackbar">Silindi</string>
     <string name="habit_name">Alışkanlık adı</string>
     <string name="emoji">Emoji</string>
-    <string name="custom_emoji">Özel emoji</string>
     <string name="daily_goal">Günlük hedef</string>
     <string name="checkbox_goal">Tamamlandı</string>
     <string name="number_goal">Sayı hedefi</string>
@@ -44,12 +44,10 @@
     <string name="unit_step">adım</string>
     <string name="progress_count">%1$s</string>
     <string name="daily_target">Günlük hedef: %1$s</string>
-    <string name="complete_all">Hepsini seç</string>
     <string name="streak_days">🔥 %1$d gün</string>
     <string name="current_streak">Mevcut Seri</string>
     <string name="best_streak">En İyi Seri</string>
     <string name="total_days">Toplam Gün</string>
-    <string name="last_seven_days">Son 7 gün</string>
     <string name="last_days">Son günler</string>
     <string name="range_seven_days">7 gün</string>
     <string name="range_thirty_days">30 gün</string>
@@ -63,11 +61,6 @@
     <string name="reminder_time">Hatırlatma saati</string>
     <string name="time_icon">⏰</string>
     <string name="select_time">Saat seç</string>
-    <string name="reminder_time_value">%1$02d:%2$02d</string>
-    <string name="test_notification_icon">🧪</string>
-    <string name="test_notification_title">Test bildirimi gönder</string>
-    <string name="test_notification_description">5 saniye sonra deneme bildirimi gönderir</string>
-    <string name="test_notification_action">Gönder</string>
     <string name="rate_us">Bizi değerlendir</string>
     <string name="rate_icon">⭐</string>
     <string name="rate_us_todo">Yakında mağaza değerlendirmesi açılacak.</string>
@@ -84,8 +77,6 @@
     <string name="info_streak_text">Bir alışkanlığı hedeflediğin gün tamamladığında seri başlar. Ardışık günlerde devam edersen seri artar. Bir gün kaçırırsan seri yeniden başlar.</string>
     <string name="info_reminders_title">Hatırlatmalar</string>
     <string name="info_reminders_text">Bildirimleri açarak her gün seçtiğin saatte alışkanlıklarını tamamlaman için hatırlatma alabilirsin.</string>
-    <string name="pro_section_title">Premium</string>
-    <string name="pro_section_description">Gelişmiş istatistikler yakında burada olacak.</string>
     <string name="notification_channel_name">Günlük Hatırlatma</string>
     <string name="notification_title">Günlük Takip</string>
     <string name="notification_message">Alışkanlıklarını tamamlamayı unutma 🔥</string>

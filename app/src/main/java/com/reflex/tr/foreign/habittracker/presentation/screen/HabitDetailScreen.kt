@@ -76,7 +76,12 @@ fun HabitDetailScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.habit_detail), fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        stringResource(R.string.habit_detail),
+                        fontWeight = FontWeight.Bold
+                    )
+                },
                 navigationIcon = {
                     TextButton(onClick = onBack) {
                         Text(stringResource(R.string.back))
@@ -110,7 +115,10 @@ fun HabitDetailScreen(
                     .padding(innerPadding),
                 contentAlignment = Alignment.Center
             ) {
-                Text(stringResource(R.string.habit_not_found), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(
+                    stringResource(R.string.habit_not_found),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
             return@Scaffold
         }
@@ -151,7 +159,10 @@ fun HabitDetailScreen(
                             maxLines = 2
                         )
                         Text(
-                            text = stringResource(R.string.daily_target, formatTargetValue(habit.targetCount, habit.unit)),
+                            text = stringResource(
+                                R.string.daily_target,
+                                formatTargetValue(habit.targetCount, habit.unit)
+                            ),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -289,7 +300,11 @@ private fun RangeChip(
     Box(
         modifier = Modifier
             .clip(shape)
-            .background(if (selected) NeonBlue.copy(alpha = 0.16f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.54f))
+            .background(
+                if (selected) NeonBlue.copy(alpha = 0.16f) else MaterialTheme.colorScheme.surfaceVariant.copy(
+                    alpha = 0.54f
+                )
+            )
             .border(
                 1.dp,
                 if (selected) NeonBlue.copy(alpha = 0.72f) else MaterialTheme.colorScheme.outlineVariant,

@@ -76,9 +76,6 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
         val nextCount = if (todayCount >= 1) 0 else 1
         viewModelScope.launch {
             repository.setTodayProgress(id, state.today, nextCount)
-            if (nextCount >= 1) {
-                // TODO: Show an interstitial ad after a habit is completed.
-            }
         }
     }
 
@@ -114,9 +111,5 @@ class HabitViewModel(application: Application) : AndroidViewModel(application) {
             val settings = settingsRepository.settings.first()
             reminderScheduler.schedule(settings)
         }
-    }
-
-    fun sendTestNotification() {
-        reminderScheduler.scheduleTestNotification()
     }
 }

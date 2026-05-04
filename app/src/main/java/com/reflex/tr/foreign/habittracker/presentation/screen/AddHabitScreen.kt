@@ -81,9 +81,9 @@ fun AddHabitScreen(
     var unit by remember { mutableStateOf(defaultUnit) }
     val parsedTargetCount = targetCountInput.toIntOrNull()
     val isNumberTargetValid = targetCountInput.isNotBlank() &&
-        targetCountInput.all { it.isDigit() } &&
-        parsedTargetCount != null &&
-        parsedTargetCount in 1..100_000
+            targetCountInput.all { it.isDigit() } &&
+            parsedTargetCount != null &&
+            parsedTargetCount in 1..100_000
     val displayedTargetCount = parsedTargetCount?.takeIf { isNumberTargetValid } ?: 5
     val targetCount = if (type == HabitType.CHECKBOX) 1 else displayedTargetCount
     val canSave = name.isNotBlank() && (type == HabitType.CHECKBOX || isNumberTargetValid)
@@ -203,7 +203,10 @@ fun AddHabitScreen(
                                     verticalArrangement = Arrangement.spacedBy(12.dp)
                                 ) {
                                     Text(
-                                        text = stringResource(R.string.target_count, formatTargetValue(displayedTargetCount, unit)),
+                                        text = stringResource(
+                                            R.string.target_count,
+                                            formatTargetValue(displayedTargetCount, unit)
+                                        ),
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.onSurface

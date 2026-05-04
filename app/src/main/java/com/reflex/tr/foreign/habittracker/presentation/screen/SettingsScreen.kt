@@ -122,7 +122,7 @@ fun SettingsScreen(
                 title = stringResource(R.string.rate_us),
                 description = stringResource(R.string.rate_us_todo),
                 actionText = stringResource(R.string.rate_us),
-                onClick = { /* TODO: Open store rating flow. */ }
+                onClick = {}
             )
         }
     }

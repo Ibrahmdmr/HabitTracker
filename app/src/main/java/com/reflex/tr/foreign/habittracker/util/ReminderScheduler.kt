@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.reflex.tr.foreign.habittracker.BuildConfig
 import com.reflex.tr.foreign.habittracker.data.model.ReminderSettings
@@ -32,9 +31,6 @@ class ReminderScheduler(
 
         ReminderReceiver.ensureChannel(context)
         val triggerAt = nextTriggerAt(settings.reminderHour, settings.reminderMinute)
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Scheduling daily reminder for $triggerAt (${settings.reminderHour}:${settings.reminderMinute})")
-        }
         setAlarm(triggerAt, pendingIntent(settings, scheduleNextDay = true))
     }
 
@@ -53,90 +49,34 @@ class ReminderScheduler(
         setAlarm(triggerAt, pendingIntent(settings, scheduleNextDay = true))
     }
 
-    fun scheduleTestNotification() {
-        if (!hasNotificationPermission()) return
-        ReminderReceiver.ensureChannel(context)
-        val triggerAt = System.currentTimeMillis() + TEST_NOTIFICATION_DELAY_MS
-        setAlarm(
-            triggerAt,
-            pendingIntent(
-                ReminderSettings(notificationsEnabled = true),
-                requestCode = TEST_REQUEST_CODE,
-                scheduleNextDay = false
-            )
-        )
-    }
-
     @SuppressLint("ScheduleExactAlarm")
     private fun setAlarm(triggerAt: Long, pendingIntent: PendingIntent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
-            if (BuildConfig.DEBUG) {
-                Log.w(TAG, "Exact alarm permission unavailable, scheduling inexact reminder")
-            }
             setInexactAlarm(triggerAt, pendingIntent)
             return
         }
 
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP,
-                    triggerAt,
-                    pendingIntent
-                )
-            } else {
-                alarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP,
-                    triggerAt,
-                    pendingIntent
-                )
-            }
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                triggerAt,
+                pendingIntent
+            )
         } catch (exception: SecurityException) {
-            if (BuildConfig.DEBUG) {
-                Log.w(TAG, "Exact alarm failed, scheduling inexact reminder", exception)
-            }
             setInexactAlarm(triggerAt, pendingIntent)
         }
     }
 
     private fun setInexactAlarm(triggerAt: Long, pendingIntent: PendingIntent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                triggerAt,
-                pendingIntent
-            )
-        } else {
-            alarmManager.set(
-                AlarmManager.RTC_WAKEUP,
-                triggerAt,
-                pendingIntent
-            )
-        }
-    }
-
-    private fun alarmInfoIntent(): PendingIntent {
-        val launchIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)
-            ?: Intent(context, ReminderReceiver::class.java).apply {
-                action = ReminderReceiver.ACTION_SHOW_REMINDER
-            }
-        return PendingIntent.getActivity(
-            context,
-            ALARM_INFO_REQUEST_CODE,
-            launchIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        alarmManager.setAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            triggerAt,
+            pendingIntent
         )
     }
 
     fun cancel() {
         alarmManager.cancel(pendingIntent())
-        alarmManager.cancel(
-            pendingIntent(
-                settings = null,
-                requestCode = TEST_REQUEST_CODE,
-                scheduleNextDay = false
-            )
-        )
     }
 
     private fun hasNotificationPermission(): Boolean {
@@ -188,11 +128,7 @@ class ReminderScheduler(
     }
 
     companion object {
-        private const val TAG = "ReminderScheduler"
         private const val REMINDER_REQUEST_CODE = 42
-        private const val TEST_REQUEST_CODE = 43
-        private const val ALARM_INFO_REQUEST_CODE = 44
-        private const val TEST_NOTIFICATION_DELAY_MS = 5_000L
         private const val SAME_MINUTE_DEBUG_DELAY_MS = 5_000L
     }
 }

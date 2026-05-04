@@ -8,20 +8,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.reflex.tr.foreign.habittracker.BuildConfig
 import com.reflex.tr.foreign.habittracker.R
 import com.reflex.tr.foreign.habittracker.data.model.ReminderSettings
 
 class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent?.action != ACTION_SHOW_REMINDER) return
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Reminder receiver fired")
-        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
@@ -57,7 +52,6 @@ class ReminderReceiver : BroadcastReceiver() {
         const val EXTRA_REMINDER_MINUTE = "extra_reminder_minute"
         const val EXTRA_SCHEDULE_NEXT_DAY = "extra_schedule_next_day"
         const val CHANNEL_ID = "daily_reminder_channel"
-        private const val TAG = "ReminderReceiver"
         private const val NOTIFICATION_ID = 1001
 
         fun ensureChannel(context: Context) {
