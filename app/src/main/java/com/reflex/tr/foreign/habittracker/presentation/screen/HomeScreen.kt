@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.reflex.tr.foreign.habittracker.R
+import com.reflex.tr.foreign.habittracker.presentation.component.AdMobBanner
 import com.reflex.tr.foreign.habittracker.presentation.component.EmptyState
 import com.reflex.tr.foreign.habittracker.presentation.component.HabitCard
 import com.reflex.tr.foreign.habittracker.presentation.component.MotivationCard
@@ -59,6 +60,14 @@ fun HomeScreen(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        bottomBar = {
+            AdMobBanner(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(horizontal = 24.dp, vertical = 8.dp)
+            )
+        },
         floatingActionButton = {
             if (uiState.habits.isNotEmpty()) {
                 FloatingActionButton(

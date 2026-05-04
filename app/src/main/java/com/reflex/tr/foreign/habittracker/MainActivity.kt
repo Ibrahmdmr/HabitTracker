@@ -19,11 +19,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.reflex.tr.foreign.habittracker.presentation.navigation.HabitNavGraph
 import com.reflex.tr.foreign.habittracker.presentation.screen.HabitViewModel
 import com.reflex.tr.foreign.habittracker.presentation.theme.HabitTrackerTheme
+import com.reflex.tr.foreign.habittracker.util.AdsManager
 import com.reflex.tr.foreign.habittracker.util.ReminderReceiver
 
 class MainActivity : ComponentActivity() {
     private var notificationPermissionResult: ((Boolean, Boolean) -> Unit)? = null
     private var exactAlarmPermissionResult: ((Boolean) -> Unit)? = null
+    private val adsManager by lazy { AdsManager(this) }
 
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -61,13 +63,15 @@ class MainActivity : ComponentActivity() {
         }
         super.onCreate(savedInstanceState)
         ReminderReceiver.ensureChannel(this)
+        adsManager.initialize()
         setContent {
             val viewModel: HabitViewModel = viewModel()
             HabitTrackerTheme {
                 HabitNavGraph(
                     viewModel = viewModel,
                     onNotificationPermissionRequest = ::requestNotificationPermission,
-                    onExactAlarmPermissionRequest = ::requestExactAlarmPermission
+                    onExactAlarmPermissionRequest = ::requestExactAlarmPermission,
+                    onImportantAdAction = adsManager::recordImportantAction
                 )
             }
         }

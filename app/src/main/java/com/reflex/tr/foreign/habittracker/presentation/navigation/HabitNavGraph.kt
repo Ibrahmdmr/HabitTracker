@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.reflex.tr.foreign.habittracker.R
+import com.reflex.tr.foreign.habittracker.data.model.HabitType
 import com.reflex.tr.foreign.habittracker.presentation.screen.AddHabitScreen
 import com.reflex.tr.foreign.habittracker.presentation.screen.HabitDetailScreen
 import com.reflex.tr.foreign.habittracker.presentation.screen.HabitViewModel
@@ -36,7 +37,8 @@ object Routes {
 fun HabitNavGraph(
     viewModel: HabitViewModel,
     onNotificationPermissionRequest: ((Boolean, Boolean) -> Unit) -> Unit,
-    onExactAlarmPermissionRequest: ((Boolean) -> Unit) -> Unit
+    onExactAlarmPermissionRequest: ((Boolean) -> Unit) -> Unit,
+    onImportantAdAction: () -> Unit
 ) {
     val navController = rememberNavController()
     val uiState by viewModel.uiState.collectAsState()
@@ -55,6 +57,7 @@ fun HabitNavGraph(
                     ?.collect { habitAdded ->
                         if (habitAdded) {
                             snackbarHostState.showSnackbar(habitAddedMessage)
+                            onImportantAdAction()
                             savedStateHandle.set("habitAdded", false)
                         }
                     }
@@ -74,8 +77,24 @@ fun HabitNavGraph(
                 uiState = uiState,
                 onAddHabitClick = { navController.navigate(Routes.AddHabit) },
                 onHabitClick = { navController.navigate(Routes.detail(it)) },
-                onToggleHabit = viewModel::toggleToday,
-                onCountChange = viewModel::changeTodayCount,
+                onToggleHabit = { habitId ->
+                    val habit = uiState.habits.firstOrNull { it.id == habitId }
+                    val completedNow = habit?.type == HabitType.CHECKBOX && habit.currentCount < habit.targetCount
+                    viewModel.toggleToday(habitId)
+                    if (completedNow) {
+                        onImportantAdAction()
+                    }
+                },
+                onCountChange = { habitId, count ->
+                    val habit = uiState.habits.firstOrNull { it.id == habitId }
+                    val completedNow = habit?.type == HabitType.COUNT &&
+                        habit.currentCount < habit.targetCount &&
+                        count >= habit.targetCount
+                    viewModel.changeTodayCount(habitId, count)
+                    if (completedNow) {
+                        onImportantAdAction()
+                    }
+                },
                 onSettingsClick = { navController.navigate(Routes.Settings) },
                 snackbarHostState = snackbarHostState
             )
